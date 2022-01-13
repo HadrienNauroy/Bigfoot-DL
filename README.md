@@ -1,6 +1,6 @@
 # Bigfoot-DL
  
-Tu vas bientôt perdre tes identifiants Bigfoot car tu es trop vieux, tu regardes des miliers de films ou tout simplement tu as la flemme ? Voici l'outil qu'il te faut. Bigfoot DL te permet d'autaumatiser le telechargement de tes films (Séries incomming).
+Tu vas bientôt perdre tes identifiants Bigfoot car tu es trop vieux, tu regardes des miliers de films, tu as tout simplement la flemme ? Voici l'outil qu'il te faut. Bigfoot DL te permet d'autaumatiser le telechargement de tes films (Séries incomming).
 
 ## Dépendances
 
@@ -46,12 +46,17 @@ Enfin pour lancer le programe, place toi dans le repertoir où se situe le progr
 PS D:\Projets\Bigfoot DL> python3 main.py
 ```
 
-Et voilà tu peux suivre l'évolution de tes telechargement dans le terminal qui s'est ouvert ! 
+Et voilà tu peux suivre l'évolution de tes telechargements dans le terminal qui s'est ouvert ! 
 
 ## Connection trop lente
 
-Il peut arriver que le programe soulève une erreur du type `increase 'WAIT_TIME'` rends toi alors dans le fichier config et augmente legèrement la valeur de cette variable. 
+Il peut arriver que le programe soulève une erreur du type `increase 'WAIT_TIME'`. Il est possible que ce soit a cause d'une connexion trop lente ou d'un PC qui rame. Rends toi alors dans le fichier `config.py` et augmente legèrement la valeur de cette variable. 
 
+## Plus d'informations
+
+1. Pas besoin de retirer les films déjà telechargés du fichier `watch_list.txt` le programme s'en souviens même si tu as déplacé les films. 
+2. Pour stopper le programe avant qu'il n'ai telechargé tous les films tu peux presser la commande suivante `CTRL + C` ce qui ne devrait pas poser de problème. Le telechargement reprendra là où il s'est arrété.
+3. Si tus as une autre question où que tu veux reporter un bug tu peux ouvrir une [issue](https://github.com/HadrienNauroy/Bigfoot-DL/issues), je tacherais d'y répondre. 
 
 
 
