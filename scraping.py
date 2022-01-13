@@ -12,16 +12,17 @@ from selenium.webdriver.common.keys import Keys as K
 from selenium.webdriver.chrome.service import Service
 import os
 import time as tm
+import urllib
 
 # local files
 import config
 
 
 # parametres
-WAIT_TIME = 3
+WAIT_TIME = config.WAIT_TIME
 
 
-def initialise_scraping():
+def initialise_scraping(download_location):
     """
     This function initialise the driver with all necessary options
     """
@@ -33,7 +34,16 @@ def initialise_scraping():
     # initialisation du driver
     options = webdriver.ChromeOptions()
     options.add_argument("--start-maximized")
-    options.add_argument("headless")
+    prefs = {
+        "download.default_directory": download_location,
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": False,
+        "safebrowsing.disable_download_protection": True,
+    }
+
+    options.add_experimental_option("prefs", prefs)
+    # options.add_argument("headless")
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
     browser = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()), options=options
@@ -62,11 +72,12 @@ def connect_to_bigfoot(browser):
         tm.sleep(WAIT_TIME)
         return True
 
-    except Exception:
+    except Exception as e:
         print(
-            "An error occured while connecting to bigfoot. \
-            Please verify your username and password or increase 'WAIT_TIME'"
+            "An error occured while connecting to bigfoot.\n",
+            "Please verify your username and password or increase 'WAIT_TIME'",
         )
+        # print(e)
         return False
 
 
@@ -82,12 +93,28 @@ def download_movie(browser, title):
     assert type(title) == str
 
     try:
+        # fake search
         search = browser.find_elements(By.CSS_SELECTOR, "input")[0]
+        search.send_keys(" ")
+        tm.sleep(1.5 * WAIT_TIME)
+        search.send_keys(K.ENTER)
+        tm.sleep(WAIT_TIME)
+
+        # clear previous serach
+        button = browser.find_elements(
+            By.CSS_SELECTOR,
+            "button.v-icon.notranslate.v-icon--link.mdi.mdi-close",
+        )[0]
+        button.click()
+
+        # real search
+        search = browser.find_elements(By.CSS_SELECTOR, "input")[2]
         search.send_keys(title)
         tm.sleep(1.5 * WAIT_TIME)
         search.send_keys(K.ENTER)
         tm.sleep(WAIT_TIME)
 
+        # extract element from table
         table = browser.find_elements(By.CSS_SELECTOR, "table")[0]
         data = table.text.split("\n")
         results = [
@@ -97,6 +124,7 @@ def download_movie(browser, title):
         others = [elem["Title"] for elem in results if elem["Type"] == "Film"]
         tm.sleep(WAIT_TIME)
 
+        # go through table
         found = False
         for k, res in enumerate(results):
             if res["Title"].lower() == title.lower() and res["Type"] == "Film":
@@ -107,6 +135,7 @@ def download_movie(browser, title):
         if not found:
             return False, others
 
+        # download
         else:
             tm.sleep(WAIT_TIME)
             browser.find_elements(By.CSS_SELECTOR, "button.v-btn")[3].click()

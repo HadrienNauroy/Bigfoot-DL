@@ -5,7 +5,7 @@
 import os
 import re
 import time as tm
-import shutil
+import sys
 
 
 # local file
@@ -16,21 +16,24 @@ import data_base as db
 
 def main():
 
-    # load config :
-    paths = config.downloads, config.destination
+    # initial display
+    initial_display()
+
+    # load config
+    destination = config.destination
 
     # initialise the connection with the data base (and create it if needed)
     connection = db.main()
 
     # initialize scraping
-    browser = scrap.initialise_scraping()
+    browser = scrap.initialise_scraping(destination)
     success = scrap.connect_to_bigfoot(browser)
     if not success:
         return False
 
     # load watch liste
     with open(".\watch_list.txt", "r") as file:
-        watch_list = file.readlines()
+        watch_list = file.read().splitlines()
 
     # set up internal use
     report = {
@@ -41,19 +44,36 @@ def main():
     }
 
     # main loop
+    for title in watch_list:
+        # try to download the movie
+        status = download(browser, connection, title, destination)
+        report[status] += [title]
     try:
         for title in watch_list:
             # try to download the movie
-            status = download(browser, connection, title, paths)
+            status = download(browser, connection, title, destination)
             report[status] += [title]
 
         browser.close()
         report_to_user(report)
 
-    except Exception as e:
-        print("error", e)
+    except KeyboardInterrupt:
         report_to_user(report)
         browser.close()
+        sys.exit()
+
+    except Exception as e:
+        print("error", e)
+        browser.close()
+
+
+def initial_display():
+    os.system("cls")
+    print(
+        "\n#################################################################################\n",
+        "                       BIGFOOT DL (V 1.0)"
+        "\n#################################################################################\n\n",
+    )
 
 
 def report_to_user(report):
@@ -72,7 +92,7 @@ def report_to_user(report):
     )
 
 
-def download(browser, connection, title, paths):
+def download(browser, connection, title, destination):
     """
     Try to download the movie
     and add it in the database if this is not already done
@@ -92,7 +112,7 @@ def download(browser, connection, title, paths):
 
             # not on bigfoot case or sythaxe error (from user)
             if not succes:
-                others = " / ".join(result)
+                others = " / ".join(result[:3])
                 print(f"{title} is not on bigfoot !")
                 print(f"Maybe this could interest you: {others}\n")
                 status = "not_on_bigfoot"
@@ -100,8 +120,8 @@ def download(browser, connection, title, paths):
             # downloading case
             else:
                 status = "downloaded"
+                wait_download(result, destination)
                 db.add_download(connection, (title, result["Year"]))
-                wait_and_moove(result, paths)
 
     # already downloaded case
     else:
@@ -111,29 +131,53 @@ def download(browser, connection, title, paths):
     return status
 
 
-def wait_and_moove(result, paths):
+def wait_download(result, destination):
     """
     Wait during the donwloading a the movie.
-    Then Movie it from downloads to the destination file
+    Then rename it
+
+    The function is quite comple because there is diffrent type of file and diffrent behaviour
     """
 
-    source, destination = paths
-    list_dir = os.listdir(source)
-    list_movie_og = re.findall(".*.mp4", "\n".join(list_dir))
+    list_dir = os.listdir(destination)
+    list_movie_og = re.findall(".*.mkv.crdownload", "\n".join(list_dir))
     list_movie = list_movie_og.copy()
-    n = len(list_movie)
+
+    list_mp4_og = re.findall(".*.mp4.crdownload", "\n".join(list_dir))
+    list_mp4 = list_mp4_og.copy()
+
+    n,p = len(list_movie), len(list_mp4)
     title = result["Title"]
     year = result["Year"]
-    while len(list_movie) == n:
-        list_dir = os.listdir(source)
-        list_movie = re.findall(".*.mp4", "\n".join(list_dir))
+
+    # While download is not done yet
+    while len(list_movie) == n and len(list_mp4) == p:
+        list_dir = os.listdir(destination)
+        list_movie = re.findall(".*.mkv.crdownload", "\n".join(list_dir))
+        list_mp4 = re.findall(".*.mp4.crdownload", "\n".join(list_dir))
+
         for k in range(4):
             print(f"Downloading {title} " + k * "." + "     " + "\r", end="")
             tm.sleep(0.5)
 
-    movie = set(list_movie).difference(set(list_movie_og))
-    movie = list(movie)[0]
-    shutil.move(source + "\\" + movie, destination + "\\" + title + "_" + year + ".mp4")
+    # mkv file case
+    if len(list_movie) != n:
+        movie = set(list_movie_og).difference(set(list_movie))
+        movie = list(movie)[0][:-11]
+        os.rename(
+            destination + "\\" + movie,
+            destination + "\\" + title + ".mkv",
+        )
+
+    # mp4 file case
+    else:
+        movie = set(list_mp4_og).difference(set(list_mp4))
+        movie = list(movie)[0][:-11]
+        os.rename(
+            destination + "\\" + movie,
+            destination + "\\" + title + " (" + year + ")" ".mp4",
+        )
+
     print(f"{title} succesfully downloaded ! ")
 
 
