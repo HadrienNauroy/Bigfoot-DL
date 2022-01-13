@@ -34,7 +34,7 @@ def main():
     # load watch liste
     with open(".\watch_list.txt", "r", encoding="UTF-8") as file:
         watch_list = file.read().splitlines()
-        print(watch_list)
+
 
     # set up internal use
     report = {
