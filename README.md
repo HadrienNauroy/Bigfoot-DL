@@ -1,4 +1,4 @@
-# Bigfoot-DL ![Test Image 1](logo.ico)
+# Bigfoot-DL 🦍⬇️
  
 
 Tu vas bientôt perdre tes identifiants Bigfoot car tu es trop vieux, tu regardes des miliers de films, tu as tout simplement la flemme ? Voici l'outil qu'il te faut. Bigfoot DL te permet d'autaumatiser le telechargement de tes films (Séries incomming).
