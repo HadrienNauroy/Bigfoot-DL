@@ -2,8 +2,8 @@
 
 
 # indentifiants cascad
-username = "Dupont"
-password = "m0t2Passe"
+username = "Nauroy"
+password = "hNRNTN1099@ENSTA1"
 
 # Là où ranger les films
 destination = "D:\\films"

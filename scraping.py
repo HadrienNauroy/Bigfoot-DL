@@ -146,7 +146,7 @@ def download_movie(browser, title):
         print(
             f"An error occured while scraping for {title}. Try to increase 'WAIT_TIME'"
         )
-        print(e)
+        # print(e)
         return None
 
 

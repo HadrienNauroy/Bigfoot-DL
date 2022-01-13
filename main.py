@@ -43,6 +43,9 @@ def main():
         "not_on_bigfoot": [],
     }
 
+    # inform user
+    print("Initialisation [done]")
+
     # main loop
     for title in watch_list:
         # try to download the movie
@@ -72,7 +75,9 @@ def initial_display():
     print(
         "\n#################################################################################\n",
         "                       BIGFOOT DL (V 1.0)"
-        "\n#################################################################################\n\n",
+        "\n#################################################################################\n\n"
+        "Initialisation [Working]\r",
+        end="",
     )
 
 
@@ -146,7 +151,7 @@ def wait_download(result, destination):
     list_mp4_og = re.findall(".*.mp4.crdownload", "\n".join(list_dir))
     list_mp4 = list_mp4_og.copy()
 
-    n,p = len(list_movie), len(list_mp4)
+    n, p = len(list_movie), len(list_mp4)
     title = result["Title"]
     year = result["Year"]
 
