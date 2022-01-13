@@ -12,7 +12,7 @@ from selenium.webdriver.common.keys import Keys as K
 from selenium.webdriver.chrome.service import Service
 import os
 import time as tm
-import urllib
+
 
 # local files
 import config
@@ -43,7 +43,7 @@ def initialise_scraping(download_location):
     }
 
     options.add_experimental_option("prefs", prefs)
-    # options.add_argument("headless")
+    options.add_argument("headless")
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
     browser = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()), options=options
