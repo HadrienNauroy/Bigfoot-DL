@@ -34,6 +34,7 @@ def main():
     # load watch liste
     with open(".\watch_list.txt", "r", encoding="UTF-8") as file:
         watch_list = file.read().splitlines()
+        print(watch_list)
 
     # set up internal use
     report = {
@@ -43,14 +44,7 @@ def main():
         "not_on_bigfoot": [],
     }
 
-    # inform user
-    print("Initialisation [done]")
-
     # main loop
-    for title in watch_list:
-        # try to download the movie
-        status = download(browser, connection, title, destination)
-        report[status] += [title]
     try:
         for title in watch_list:
             # try to download the movie
@@ -76,8 +70,7 @@ def initial_display():
         "\n#################################################################################\n",
         "                       BIGFOOT DL (V 1.0)"
         "\n#################################################################################\n\n"
-        "Initialisation [Working]\r",
-        end="",
+        "Initialisation [Working]",
     )
 
 
