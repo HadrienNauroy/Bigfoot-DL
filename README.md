@@ -60,7 +60,7 @@ Il peut arriver que le programme soulève une erreur du type `increase 'WAIT_TIM
 
 1. Pas besoin de retirer les films déjà téléchargés du fichier `watch_list.txt` le programme s'en souviens même si tu as déplacé les films. 
 2. Pour stopper le programme avant qu'il n'ait téléchargé tous les films tu peux presser la commande suivante `CTRL + C` ce qui ne devrait pas poser de problème. Le téléchargement reprendra là où il s'est arrêté.
-3. Il ne faut pas mettre de ligne vide dans le fichier `watch_list.txt'.
+3. Il ne faut pas mettre de ligne vide dans le fichier `watch_list.txt`.
 4. Si tu as une autre question où que tu veux reporter un bug tu peux ouvrir une [issue](https://github.com/HadrienNauroy/Bigfoot-DL/issues), je tacherais d'y répondre.
 
 
