@@ -177,6 +177,13 @@ def wait_download(result, destination):
         )
 
     print(f"{title} succesfully downloaded ! ")
+    
+ 
+def remove_space(title):
+    if title[-1] == " ":
+        return remove_space(title[:-1])
+    else:
+        return title
 
 
 if __name__ == "__main__":
