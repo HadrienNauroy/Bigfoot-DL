@@ -27,6 +27,9 @@ password = "m0t2Passe"
 
 # Là où ranger les films
 destination = "D:\\films"
+
+# Ne pas toucher sauf si votre connection est trop lente !
+WAIT_TIME = 5
 ```
 
 Ensuite il faut remplire le fichier `watch_list.txt` avec les films que tu veux telecharger. Voila un exemple avec les 5 meilleurs films de tout les temps selon allo-ciné :
