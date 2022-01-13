@@ -29,7 +29,7 @@ password = "m0t2Passe"
 destination = "D:\\films"
 ```
 
-Ensuite il faut remplire le fichier watch_list.txt avec les films que tu veux telecharger. Voila un exemple avec les 5 meilleurs films de tout les temps selon allo-ciné :
+Ensuite il faut remplire le fichier `watch_list.txt` avec les films que tu veux telecharger. Voila un exemple avec les 5 meilleurs films de tout les temps selon allo-ciné :
 
 ```
 Forrest Gump
