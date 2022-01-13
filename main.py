@@ -32,7 +32,7 @@ def main():
         return False
 
     # load watch liste
-    with open(".\watch_list.txt", "r") as file:
+    with open(".\watch_list.txt", "r", encoding="UTF-8") as file:
         watch_list = file.read().splitlines()
 
     # set up internal use
@@ -119,7 +119,7 @@ def download(browser, connection, title, destination):
             if not succes:
                 others = " / ".join(result[:3])
                 print(f"{title} is not on bigfoot !")
-                print(f"Maybe this could interest you: {others}\n")
+                print(f"Maybe this could interest you: {others}")
                 status = "not_on_bigfoot"
 
             # downloading case
