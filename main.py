@@ -138,43 +138,27 @@ def wait_download(result, destination):
     """
 
     list_dir = os.listdir(destination)
-    list_movie_og = re.findall(".*.mkv.crdownload", "\n".join(list_dir))
+    list_movie_og = re.findall(".*.crdownload", "\n".join(list_dir))
     list_movie = list_movie_og.copy()
 
-    list_mp4_og = re.findall(".*.mp4.crdownload", "\n".join(list_dir))
-    list_mp4 = list_mp4_og.copy()
-
-    n, p = len(list_movie), len(list_mp4)
+    n, = len(list_movie)
     title = result["Title"]
     year = result["Year"]
 
     # While download is not done yet
-    while len(list_movie) == n and len(list_mp4) == p:
+    while len(list_movie) == n :
         list_dir = os.listdir(destination)
-        list_movie = re.findall(".*.mkv.crdownload", "\n".join(list_dir))
-        list_mp4 = re.findall(".*.mp4.crdownload", "\n".join(list_dir))
-
+        list_movie = re.findall(".*.crdownload", "\n".join(list_dir))
         for k in range(4):
             print(f"Downloading {title} " + k * "." + "     " + "\r", end="")
             tm.sleep(0.5)
-
-    # mkv file case
-    if len(list_movie) != n:
-        movie = set(list_movie_og).difference(set(list_movie))
-        movie = list(movie)[0][:-11]
-        os.rename(
-            destination + "\\" + movie,
-            destination + "\\" + title + ".mkv",
-        )
-
-    # mp4 file case
-    else:
-        movie = set(list_mp4_og).difference(set(list_mp4))
-        movie = list(movie)[0][:-11]
-        os.rename(
-            destination + "\\" + movie,
-            destination + "\\" + title + " (" + year + ")" ".mp4",
-        )
+            
+    movie = set(list_movie_og).difference(set(list_movie))
+    movie = list(movie)[0][:-11]
+    os.rename(
+        destination + "\\" + movie,
+        destination + "\\" + title + movie[-4:],
+    )
 
     print(f"{title} succesfully downloaded ! ")
     
