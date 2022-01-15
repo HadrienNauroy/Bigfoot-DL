@@ -32,9 +32,8 @@ def main():
         return False
 
     # load watch liste
-    with open(".\watch_list.txt", "r", encoding="UTF-8") as file:
+    with open("watch_list.txt", "r", encoding="UTF-8") as file:
         watch_list = file.read().splitlines()
-
 
     # set up internal use
     report = {
@@ -163,8 +162,8 @@ def wait_download(result, destination):
         movie = set(list_movie_og).difference(set(list_movie))
         movie = list(movie)[0][:-11]
         os.rename(
-            destination + "\\" + movie,
-            destination + "\\" + title + ".mkv",
+            destination + "/" + movie,
+            destination + "/" + title + ".mkv",
         )
 
     # mp4 file case
@@ -172,13 +171,13 @@ def wait_download(result, destination):
         movie = set(list_mp4_og).difference(set(list_mp4))
         movie = list(movie)[0][:-11]
         os.rename(
-            destination + "\\" + movie,
-            destination + "\\" + title + " (" + year + ")" ".mp4",
+            destination + "/" + movie,
+            destination + "/" + title + " (" + year + ")" ".mp4",
         )
 
     print(f"{title} succesfully downloaded ! ")
-    
- 
+
+
 def remove_space(title):
     if title[-1] == " ":
         return remove_space(title[:-1])
